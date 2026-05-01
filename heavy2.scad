@@ -1,74 +1,70 @@
-// --- Parameters ---
-hws_base_dia = 50;      
-coord_base_dia = 25;    
-tolerance = 0.5;        
-wall_thickness = 2.5;   
-floor_thickness = 2;    
-lip_height = 4;         
+/* [Sizes] */
+hws_base_dia = 50;
+coord_base_dia = 25;
+tolerance = 0.5;
 
-// Magnet Parameters
+/* [Walls] */
+wall_thickness = 2.5;
+floor_thickness = 2;
+lip_height = 4;
+smooth_radius = 5;
+bridge_width = 15;
+
+/* [Magnet] */
 mag_dia = 5.0 + tolerance;
-mag_depth = 1.3;        
+mag_depth = 1.3;
 
-// OPTIMIZATION: Smoothing and Bridge Width
-smooth_radius = 5; 
-bridge_width = 15; // Width of the connecting paths between slots
+/* [Quality] */
+$fa = 4;
+$fs = 0.4;
 
-$fn = 100; 
+eps = 0.01;
 
 // --- Calculations ---
 hws_hole = hws_base_dia + tolerance;
 coord_hole = coord_base_dia + tolerance;
 spacing = hws_hole + wall_thickness;
 
-// Position for the small base (between 1st and 2nd big base)
-coord_x = spacing / 2; 
-y_offset = (hws_hole/3 + coord_hole/2 + wall_thickness); 
+coord_x = spacing / 2;
+// Empirical diagonal placement; not a Pythagorean tangent calc
+y_offset = (hws_hole/3 + coord_hole/2 + wall_thickness);
+
+// --- Modules ---
+module slot_footprint(d) {
+    circle(d = d + 2 * wall_thickness);
+}
+
+module slot_subtract(d) {
+    translate([0, 0, floor_thickness])
+    cylinder(d = d, h = lip_height + eps);
+
+    translate([0, 0, floor_thickness - mag_depth])
+    cylinder(d = mag_dia, h = mag_depth + eps, $fn = 60);
+}
 
 // --- Render ---
 difference() {
-    // 1. OPTIMIZED BODY (Bone-style structure)
+    // Closing offset (dilate then erode) fillets concave junctions
     linear_extrude(height = floor_thickness + lip_height) {
-        offset(r = -smooth_radius) 
-        offset(r = smooth_radius)  
+        offset(r = -smooth_radius)
+        offset(r = smooth_radius)
         union() {
-            // The 3 large slot footprints
-            for (c = [0 : 2]) {
-                translate([c * spacing, 0]) 
-                circle(d = hws_hole + (wall_thickness * 2));
-            }
-            
-            // The small slot footprint (Moved between 1st and 2nd)
-            translate([coord_x, y_offset]) 
-            circle(d = coord_hole + (wall_thickness * 2));
+            for (c = [0 : 2])
+                translate([c * spacing, 0]) slot_footprint(hws_hole);
 
-            // Optimized Bridges
-            // Horizontal spine connecting all 3 big bases
-            translate([0, -bridge_width/2])
-            square([spacing * 2, bridge_width]);
-            
-            // Vertical connector (Moved to align with new coord_x)
+            translate([coord_x, y_offset]) slot_footprint(coord_hole);
+
+            // Spine fully spans the leftmost and rightmost big footprints
+            translate([-hws_hole/2, -bridge_width/2])
+            square([spacing * 2 + hws_hole, bridge_width]);
+
             translate([coord_x - bridge_width/2, 0])
             square([bridge_width, y_offset]);
         }
     }
 
-    // 2. SUBTRACT SLOTS (Large)
-    for (c = [0 : 2]) {
-        // Main Hole
-        translate([c * spacing, 0, floor_thickness])
-        cylinder(d = hws_hole, h = lip_height + 1);
-        
-        // Magnet Hole
-        translate([c * spacing, 0, floor_thickness - mag_depth])
-        cylinder(d = mag_dia, h = mag_depth + 0.1, $fn=60);
-    }
-    
-    // 3. SUBTRACT COORDINATOR SLOT (Small)
-    translate([coord_x, y_offset, floor_thickness])
-    cylinder(d = coord_hole, h = lip_height + 1);
-    
-    // Coordinator Magnet
-    translate([coord_x, y_offset, floor_thickness - mag_depth])
-    cylinder(d = mag_dia, h = mag_depth + 0.1, $fn=60);
+    for (c = [0 : 2])
+        translate([c * spacing, 0]) slot_subtract(hws_hole);
+
+    translate([coord_x, y_offset]) slot_subtract(coord_hole);
 }
