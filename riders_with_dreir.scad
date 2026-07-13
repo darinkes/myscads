@@ -1,36 +1,36 @@
 // Death Korps Spearhead (Final GW-Fit Edition)
-// 5 Reiter (35x60) + 1 Marshal (75x42) mit konischen Taschen und Magneten
+// 5 riders (35x60) + 1 Marshal (75x42) with tapered pockets and magnets
 
-/* [Base Dimensionen] */
-// GW Reiter Bases sind oben 35x60, aber unten (am Boden) ca. 36.2x61.2
+/* [Base Dimensions] */
+// GW rider bases are 35x60 at the top, but ~36.2x61.2 at the bottom (on the ground)
 rider_w = 36.2;
 rider_l = 61.2;
-// Marshal (75x42) ist unten ca. 43.5x76.5
+// Marshal (75x42) is ~43.5x76.5 at the bottom
 marshal_w = 43.5;
 marshal_l = 76.5;
 
-/* [Druck-Einstellungen] */
+/* [Print Settings] */
 wall_thickness = 3.0;
 floor_thickness = 2.0;
-wall_height = 4.5; // Etwas hoeher fuer besseren Halt
+wall_height = 4.5; // Slightly higher for a better hold
 model_smoothness = 120;
 
-// Toleranz: 0.4mm "snug", 0.8mm "loose"
+// Tolerance: 0.4mm "snug", 0.8mm "loose"
 fit_tolerance = 0.6;
-// Taper oeffnet das Loch nach oben hin fuer die schraege Base-Wand
+// Taper opens the hole toward the top to clear the sloped base wall
 base_taper = 0.8;
 
-/* [Magnete] */
+/* [Magnets] */
 mag_d = 5.4;
 mag_h = 1.2;
 
-/* [Abstaende] */
+/* [Spacing] */
 col_gap = 2.5;
 row_gap = -5;
 
 eps = 0.01;
 
-// --- MODUL: Das GW-optimierte Oval ---
+// --- MODULE: The GW-optimized oval ---
 module gw_oval(w, l, offset_val = 0) {
     offset(r = offset_val) {
         hull() {
@@ -40,7 +40,7 @@ module gw_oval(w, l, offset_val = 0) {
     }
 }
 
-// --- MODUL: Die konische Tasche ---
+// --- MODULE: The tapered pocket ---
 module negative_base_tapered(w, l) {
     hull() {
         translate([0, 0, -0.1])
@@ -50,7 +50,7 @@ module negative_base_tapered(w, l) {
     }
 }
 
-// --- Kalkulation der Positionen ---
+// --- Position calculations ---
 r_iw = rider_w + fit_tolerance * 2;
 r_il = rider_l + fit_tolerance * 2;
 m_iw = marshal_w + fit_tolerance * 2;
@@ -75,20 +75,20 @@ slots = [
     [p6, marshal_w, marshal_l],
 ];
 
-// --- FINALER DRUCK-KOERPER ---
+// --- Final print body ---
 difference() {
-    // Verbundene Bodenplatte
+    // Connected base plate
     linear_extrude(height = floor_thickness + wall_height) {
-        offset(r = -4) offset(r = 4) // Glaettung der Uebergaenge
+        offset(r = -4) offset(r = 4) // Smooth the junctions
         offset(r = wall_thickness)
         for (s = slots) translate(s[0]) gw_oval(s[1], s[2], fit_tolerance);
     }
 
-    // Aussparungen fuer die Bases
+    // Pockets for the bases
     translate([0, 0, floor_thickness])
     for (s = slots) translate(s[0]) negative_base_tapered(s[1], s[2]);
 
-    // Magnetloecher
+    // Magnet holes
     translate([0, 0, floor_thickness - mag_h])
     for (s = slots) translate(s[0]) cylinder(d = mag_d, h = mag_h + eps, $fn = 60);
 }

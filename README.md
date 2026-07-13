@@ -53,4 +53,4 @@ The `riders` formation plus a 75×42mm Marshal oval off to the right, using offi
 #### `riders_with_dreir` — GW-fit edition (tapered pockets)
 <img src="https://darinkes.github.io/myscads/images/riders_with_dreir.png" width="480" alt="riders_with_dreir preview">
 
-Same layout as `riders_with_dreir2`, tuned for a snug GW fit: larger empirical "bottom of base" dimensions and tapered pockets that open wider toward the top to clear the sloped wall of GW bases. Customizer labels are in German.
+Same layout as `riders_with_dreir2`, tuned for a snug GW fit: larger empirical "bottom of base" dimensions and tapered pockets that open wider toward the top to clear the sloped wall of GW bases.
