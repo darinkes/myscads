@@ -28,10 +28,15 @@ Ten 25mm round slots in a plain 5 columns × 2 rows grid.
 
 Same ten 25mm slots, but the two rows nest into each other's notches for a tighter footprint than the grid version.
 
-#### `heavy_weapons` / `heavy_weapons_alt` — 3× 50mm + 1× 25mm
+#### `heavy_weapons` — 3× 50mm + 1× 25mm
 <img src="https://darinkes.github.io/myscads/images/heavy_weapons.png" width="480" alt="heavy_weapons preview">
 
-Three 50mm heavy-weapon bases in a row plus one 25mm coordinator tucked above the middle slot. The two files are iterations with different placement for the small slot — pick whichever fits better.
+Three 50mm heavy-weapon bases in a row plus one 25mm coordinator tucked above the middle slot.
+
+#### `heavy_weapons_alt` — 3× 50mm + 1× 25mm, nested coordinator
+<img src="https://darinkes.github.io/myscads/images/heavy_weapons_alt.png" width="480" alt="heavy_weapons_alt preview">
+
+Same tray with the coordinator nested diagonally between the two left slots instead of above the middle — pick whichever fits better.
 
 #### `krieg_engineers` — 5× 25mm + 1× 40mm
 <img src="https://darinkes.github.io/myscads/images/krieg_engineers.png" width="480" alt="krieg_engineers preview">
