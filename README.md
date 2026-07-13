@@ -43,6 +43,11 @@ Same tray with the coordinator nested diagonally between the two left slots inst
 
 Astra Militarum Krieg Combat Engineers: a staggered pack of five 25mm bases (back row of 3, front row of 2) with a 40mm remote-mine base nestled against the right-hand edge.
 
+#### `krieg_command_squad` — 6× 25mm + 1× 32mm
+<img src="https://darinkes.github.io/myscads/images/krieg_command_squad.png" width="480" alt="krieg_command_squad preview">
+
+Astra Militarum Krieg Command Squad (2025): six 25mm bases (five veterans plus the servo-scribe) in two hex-nested rows of three, with the Lord Commissar's 32mm base nestled against the left-hand edge.
+
 ### Oval bases
 
 #### `death_riders` — 5× 35×60mm ovals
