@@ -24,9 +24,9 @@ Every tray is built the same way; understand one and you understand all of them.
 
 ## Two slot-shape conventions (don't mix them up)
 
-- **Round-base files** (`coords_5x2`, `heavy`, `heavy2`): slots are `circle`/`cylinder`; sizes are diameters. `heavy*` combine large (50mm) and small (25mm) holes with hand-tuned `y_offset` placement.
-- **Oval-base files** (`riders*`): slots are ovals. The simpler `oval()` is a scaled circle (sizes are width/length). The `gw_oval`/`marshal_oval` modules build a `hull()` of two squashed circles to better match real GW base geometry, and their pockets are **tapered** (`hull` between a tight bottom outline and a `+base_taper` wider top) to clear the sloped wall of GW bases.
+- **Round-base files** (`infantry_squad*`, `heavy_weapons*`, `krieg_engineers`): slots are `circle`/`cylinder`; sizes are diameters. `heavy_weapons*` combine large (50mm) and small (25mm) holes with hand-tuned `y_offset` placement.
+- **Oval-base files** (`death_riders*`): slots are ovals. The simpler `oval()` is a scaled circle (sizes are width/length). The `gw_oval`/`marshal_oval` modules build a `hull()` of two squashed circles to better match real GW base geometry, and their pockets are **tapered** (`hull` between a tight bottom outline and a `+base_taper` wider top) to clear the sloped wall of GW bases.
 
 ## File variants
 
-`heavy.scad`/`heavy2.scad` and `riders_with_dreir.scad`/`riders_with_dreir2.scad` are iterations on the same tray with different placement math and base dimensions (note `riders_with_dreir` uses larger empirical "bottom of base" dimensions like 36.2×61.2). When asked to "fix the holder," confirm which variant — they are not meant to be unified.
+`heavy_weapons.scad`/`heavy_weapons_alt.scad` and `death_riders_marshal.scad`/`death_riders_marshal_gw_fit.scad` are iterations on the same tray with different placement math and base dimensions (note `death_riders_marshal_gw_fit` uses larger empirical "bottom of base" dimensions like 36.2×61.2). When asked to "fix the holder," confirm which variant — they are not meant to be unified.

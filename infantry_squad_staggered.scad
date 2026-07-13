@@ -1,5 +1,5 @@
 // 10x 25mm base holder, 5 cols x 2 rows, staggered so rows nest into each other,
-// with 5x1mm magnet pockets. Staggered (hex) variant of coords_5x2.scad.
+// with 5x1mm magnet pockets. Staggered (hex) variant of infantry_squad_grid.scad.
 
 /* [Sizes] */
 base_dia = 25;
