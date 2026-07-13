@@ -1,2 +1,4 @@
-# Rendered output
+# Rendered output — never committed; CI regenerates and publishes to Pages
 *.stl
+*.png
+site/

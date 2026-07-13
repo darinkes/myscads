@@ -1,0 +1,73 @@
+name: Previews
+
+# Render a PNG of every .scad file and publish them to GitHub Pages.
+# No image is ever committed to the repo — Pages serves them straight from
+# the workflow artifact, and the README links to the github.io URLs.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; newer pushes supersede in-flight ones.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    env:
+      # Force software OpenGL (llvmpipe) so headless rendering is reliable.
+      LIBGL_ALWAYS_SOFTWARE: 1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install OpenSCAD
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends openscad xvfb
+
+      - name: Render previews
+        run: |
+          mkdir -p site/images
+          for f in *.scad; do
+            name="${f%.scad}"
+            echo "Rendering $name"
+            xvfb-run -a openscad -o "site/images/${name}.png" \
+              --imgsize=1000,750 --viewall --autocenter \
+              --colorscheme=Tomorrow "$f"
+          done
+          ls -l site/images
+
+      - name: Build gallery index
+        run: |
+          {
+            echo '<!doctype html><meta charset="utf-8">'
+            echo '<title>myscads previews</title>'
+            echo '<style>body{font-family:sans-serif;max-width:1040px;margin:2rem auto;padding:0 1rem}figure{margin:0 0 2rem}figcaption{font:600 1.1rem monospace;margin-bottom:.5rem}img{max-width:100%;border-radius:8px}</style>'
+            echo '<h1>myscads — tray previews</h1>'
+            for img in site/images/*.png; do
+              b=$(basename "$img")
+              printf '<figure><figcaption>%s</figcaption><img src="images/%s" alt="%s"></figure>\n' "${b%.png}" "$b" "${b%.png}"
+            done
+          } > site/index.html
+
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4
