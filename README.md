@@ -14,6 +14,19 @@ openscad -o out.stl infantry_squad_grid.scad
 
 The `/* [Section] */` comment blocks are OpenSCAD **Customizer** groups — the variables under them (base sizes, tolerances, magnet dimensions, wall thickness) are meant to be tuned per print and show up as sliders/fields in the GUI Customizer panel.
 
+## Releases
+
+Don't want to install OpenSCAD? Grab a release ZIP — it bundles every `.scad` source alongside a ready-to-print `.stl` for each tray.
+
+Releases are cut by pushing a version tag:
+
+```sh
+git tag v1.0
+git push origin v1.0
+```
+
+That fires the [Release workflow](.github/workflows/release.yml), which on GitHub runs `openscad -o <name>.stl <name>.scad` for every `.scad`, zips the sources and rendered STLs into `myscads-v1.0.zip`, and attaches it to an auto-generated [GitHub Release](../../releases). No STLs are committed to the repo — CI regenerates them fresh from source on every tag.
+
 ## Trays
 
 ### Round bases
