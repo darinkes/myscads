@@ -1,0 +1,40 @@
+name: Release
+
+# Render every .scad to STL, zip the .scad + .stl together, and attach the
+# archive to a GitHub Release. Triggered by pushing a version tag (e.g. v1.0).
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:  # run manually against a tag ref
+
+permissions:
+  contents: write  # create the release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      LIBGL_ALWAYS_SOFTWARE: 1  # software GL for reliable headless rendering
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install OpenSCAD
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends openscad xvfb
+
+      - name: Render STLs
+        run: |
+          for f in *.scad; do
+            echo "Rendering ${f%.scad}.stl"
+            xvfb-run -a openscad -o "${f%.scad}.stl" "$f"
+          done
+
+      - name: Package ZIP
+        run: zip "myscads-${{ github.ref_name }}.zip" *.scad *.stl
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ github.ref_name }}" myscads-*.zip --generate-notes
