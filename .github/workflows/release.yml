@@ -17,7 +17,7 @@ jobs:
     env:
       LIBGL_ALWAYS_SOFTWARE: 1  # software GL for reliable headless rendering
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install OpenSCAD
         run: |
